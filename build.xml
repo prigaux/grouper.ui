@@ -460,6 +460,8 @@
 			<param name="target" value="webapp"/>
 						<reference refid="ui.class.path.for.run"/>
 		</antcall>
+
+		<ant antfile="build.xml" target="webapp" dir="${contrib.dir}/yale-cas-auth" inheritrefs="true" />
 		
 		<!-- Make all necessary jar files available to the webapp itself -->
 		<copy todir="${webapp.folder}/WEB-INF/lib" overwrite="${overwiteLib}">
