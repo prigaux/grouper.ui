@@ -108,8 +108,8 @@ public class SimpleMembershipUpdateFilter {
             GrouperUiUtils.message("simpleMembershipUpdate.errorNotEnoughGroupChars", false), "bullet_error.png");
       } else {
         queryOptions = new QueryOptions().paging(TagUtils.mediaResourceInt("simpleMembershipUpdate.groupComboboxResultSize", 200), 1, true).sortAsc("theGroup.displayNameDb");
-        groups = GrouperDAOFactory.getFactory().getGroup().getAllGroupsSecure("%" + searchTerm + "%", grouperSession, loggedInSubject, 
-            GrouperUtil.toSet(AccessPrivilege.ADMIN, AccessPrivilege.UPDATE), queryOptions, TypeOfGroup.GROUP_OR_ROLE_SET);
+        groups = GrouperDAOFactory.getFactory().getGroup().getAllGroupsSplitScopeSecure(searchTerm, grouperSession, loggedInSubject, 
+										     GrouperUtil.toSet(AccessPrivilege.ADMIN, AccessPrivilege.UPDATE), queryOptions, TypeOfGroup.GROUP_OR_ROLE_SET);
         
         if (GrouperUtil.length(groups) == 0) {
           GrouperUiUtils.dhtmlxOptionAppend(xmlBuilder, "", 
