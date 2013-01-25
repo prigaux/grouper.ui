@@ -142,8 +142,35 @@ contextZoneJqueryHandle="#advancedLink" contextMenu="true" />
     <%-- note, the combobox does not currently auto adjust its width, so just make it really wide --%>
 
     <%-- show the combobox --%>
-    <grouper:combobox filterOperation="SimpleMembershipUpdateFilter.filterUsers" id="simpleMembershipUpdateAddMember" 
-      width="700"/>
+    <div> 
+        <input type="text" id="simpleMembershipUpdateAddMemberSearch" placeholder="Nom pr&eacute;nom" style="width: 658px;" />
+        <input type="hidden" name="simpleMembershipUpdateAddMember" id="simpleMembershipUpdateAddMember" />
+
+	<script>
+	  // NB: this code is loaded by grouperUi.js using jquery's $(..).html(...)
+	  // script tags are normally forbidden in .innerHTML but jquery handle them specially.
+	  document.autocompleteUserJquery(function ($) {
+     var select = function (event, ui) {
+        // NB: this event is called before the selected value is set in the "input"
+        var form = $(this).closest("form");
+        $("#simpleMembershipUpdateAddMember").val("ldap||||" + ui.item.value);
+        form.find("input[type='submit']").click();
+        return false;
+    };
+
+    $( "#simpleMembershipUpdateAddMemberSearch" ).autocompleteUser(
+      'https://wsgroups.univ-paris1.fr/searchUserCAS', { 
+	 wantedAttr: "eduPersonPrincipalName",
+         select: select
+      }
+    );
+
+    $( "#simpleMembershipUpdateAddMemberSearch" ).handlePlaceholderOnIE();
+
+  });
+        
+	</script>
+    </div>
 
        <div style="margin-top: 5px;">
           <%-- add member button --%>
