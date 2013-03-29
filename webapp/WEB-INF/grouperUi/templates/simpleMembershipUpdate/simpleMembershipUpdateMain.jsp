@@ -22,7 +22,7 @@ style="${grouper:hideShowStyle('simpleMembershipUpdateGroupDetails', true)}"
   groupName="${simpleMembershipUpdateContainer.guiGroup.group.displayName}"
 /></td><td> &nbsp; &nbsp; &nbsp; <a class="smallLink" href="grouper.html?operation=SimpleMembershipUpdate.index"
   ><grouper:message value="${simpleMembershipUpdateContainer.text.changeLocation}" valueTooltip="" /></a>
-  <c:if test="${mediaMap['ui-lite.link-from-admin-ui']=='true'}">
+  <c:if test="${mediaMap['ui-lite.link-from-admin-ui']=='true'} && false">
   &nbsp; &nbsp; &nbsp; <a class="smallLink" href="../../populateGroupSummary.do?groupId=${simpleMembershipUpdateContainer.guiGroup.group.id}"
   ><grouper:message valueTooltip="${simpleMembershipUpdateContainer.text.viewInAdminUiTooltip}"  
   value="${simpleMembershipUpdateContainer.text.viewInAdminUi}"  /></a>
