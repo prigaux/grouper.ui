@@ -15,7 +15,7 @@
         structureOperation="MiscMenu.miscMenuStructure" 
         contextZoneJqueryHandle="#menuLink" contextMenu="true" />
       </td>
-      <td align="right">     
+      <td align="right" class="screenWelcome_and_logoutLink">     
         <grouper:message key="simpleMembershipUpdate.screenWelcome"/> ${grouper:abbreviate(guiSettings.loggedInSubject.subject.description, 125, true, true)} 
         <c:if test="${mediaMap['logout.link.show']=='true'}">
          &nbsp; &nbsp; 
