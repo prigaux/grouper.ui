@@ -508,12 +508,7 @@ public class SimpleMembershipUpdate {
       group.deleteMember(member);
       
       GuiMember guiMember = new GuiMember(member);
-      
-      GuiResponseJs guiResponseJs = GuiResponseJs.retrieveGuiResponseJs();
-      guiResponseJs.addAction(GuiScreenAction.newAlert(
-          simpleMembershipUpdateContainer.getText().getSuccessMemberDeleted(
-              guiMember.getGuiSubject().getScreenLabel())));
-      
+   
     } catch (NoSessionException se) {
       throw se;
     } catch (ControllerDone cd) {
@@ -637,9 +632,6 @@ public class SimpleMembershipUpdate {
 
       //lets clear out the combobox:
       guiResponseJs.addAction(GuiScreenAction.newFormFieldValue("simpleMembershipUpdateAddMember", null));
-      
-      guiResponseJs.addAction(GuiScreenAction.newAlert(
-          simpleMembershipUpdateContainer.getText().getSuccessMemberAdded(subjectLabel)));
       
     } catch (NoSessionException se) {
       throw se;
