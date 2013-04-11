@@ -118,7 +118,7 @@
     containerId: 'simplemodal-container',
     containerCss: {},
     dataCss: {},
-    zIndex: 1000,
+    zIndex: 100010,
     close: true,
     closeHTML: '<a class="modalCloseImg" title="Close"></a>',
     closeClass: 'simplemodal-close',
