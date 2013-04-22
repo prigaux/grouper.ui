@@ -173,7 +173,7 @@ public class ExternalRegisterContainer implements Serializable {
           
           {
   
-            if (externalSubjectConfigBean.isInstitutionEnabled()) {
+            if (externalSubjectConfigBean.isInstitutionEnabled() && false) {
               registerField = new RegisterField();
               registerField.setSystemName("institution");
               if (externalSubjectConfigBean.isInstitutionRequired()) {
