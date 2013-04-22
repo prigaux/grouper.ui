@@ -159,10 +159,15 @@ public class ExternalRegisterContainer implements Serializable {
   
             String label = GrouperUiUtils.message("externalSubjectSelfRegister.register.field.name.label", true);
             String tooltip = GrouperUiUtils.message("externalSubjectSelfRegister.register.field.name.tooltip", true);
+	    String shib_val = getShibbolethValue("externalSubjectSelfRegister.register.field.name.shibAttr");
             
             registerField.setLabel(label);
             registerField.setTooltip(tooltip);
-            
+
+	    if (shib_val != null) {
+		registerField.setValue(shib_val);
+		registerField.setReadonly(true);
+	    } else            
             if (externalSubject != null) {
               registerField.setValue(externalSubject.getName());
             }
@@ -211,11 +216,16 @@ public class ExternalRegisterContainer implements Serializable {
   
               String label = GrouperUiUtils.message("externalSubjectSelfRegister.register.field.email.label", true);
               String tooltip = GrouperUiUtils.message("externalSubjectSelfRegister.register.field.email.tooltip", true);
+	      String shib_val = getShibbolethValue("externalSubjectSelfRegister.register.field.email.shibAttr");
               
               registerField.setLabel(label);
               registerField.setTooltip(tooltip);
               registerField.setParamName("param_email");
-  
+              
+	      if (shib_val != null) {
+		  registerField.setValue(shib_val);
+		  registerField.setReadonly(true);
+	      } else            
               if (externalSubject != null) {
                 registerField.setValue(externalSubject.getEmail());
               }
@@ -234,10 +244,17 @@ public class ExternalRegisterContainer implements Serializable {
   
             String label = GrouperUiUtils.message("externalSubjectSelfRegister.register.field." + registerField.getSystemName() + ".label", true);
             String tooltip = GrouperUiUtils.message("externalSubjectSelfRegister.register.field." + registerField.getSystemName() + ".tooltip", true);
+            String required = getNavStringOrNull("externalSubjectSelfRegister.register.field." + registerField.getSystemName() + ".required");
+            String shib_val = getShibbolethValue("externalSubjectSelfRegister.register.field." + registerField.getSystemName() + ".shibAttr");
   
             registerField.setLabel(label);
             registerField.setTooltip(tooltip);
+	    registerField.setRequired("true".equals(required));
   
+	    if (shib_val != null) {
+		registerField.setValue(shib_val);
+		registerField.setReadonly(true);
+	    } else
             if (externalSubject != null) {
               ExternalSubjectAttribute externalSubjectAttribute = externalSubject.retrieveAttribute(externalSubjectAttributeConfigBean.getSystemName(), false);
               if (externalSubjectAttribute != null) {
@@ -257,6 +274,38 @@ public class ExternalRegisterContainer implements Serializable {
         GrouperSession.stopQuietly(grouperSession);
       }
     }
+
+    /* https://wiki.shibboleth.net/confluence/display/SHIB2/NativeSPAttributeAccess#NativeSPAttributeAccess-Tool-SpecificExamples for java says: */
+    /* Shibboleth attributes are by default UTF-8 encoded. 
+       However, depending on the servlet contaner configuration they are interpreted as ISO-8859-1 values. 
+       This causes problems with non-ASCII characters. */
+    private String safe_interpret_as_UTF8(final String value) {
+        if (value == null) return null;
+        try {
+            return new String(value.getBytes("ISO-8859-1"), "UTF-8");
+        } catch (java.io.UnsupportedEncodingException e) {
+            return value;
+        }
+    }
+
+  private String getShibAttribute(String attrName) {
+      HttpServletRequest httpServletRequest = GrouperUiFilter.retrieveHttpServletRequest();
+      Object val = httpServletRequest.getAttribute(attrName);
+      return val != null ? safe_interpret_as_UTF8((String) val) : null;
+  }
+
+  private String getShibbolethValue(String key) {
+      String attrName = getNavStringOrNull(key);
+      return attrName == null ? null : getShibAttribute(attrName);
+  }
+
+  private String getNavStringOrNull(String key) {
+      try {
+	  return GrouperUiUtils.message(key);
+      } catch (java.util.MissingResourceException e) {
+	  return null;
+      }
+  }
 
   /**
    * get the identifier of the user logged in

@@ -416,12 +416,7 @@ public class ExternalSubjectSelfRegister {
                 for (RegisterField registerField : externalRegisterContainer.getRegisterFields()) {
                   
                   String paramName = registerField.getParamName();
-                  String paramValue = StringUtils.trimToNull(request.getParameter(paramName));
-                  
-                  //skip readonly fields
-                  if  (registerField.isReadonly()) {
-                    continue;
-                  }
+                  String paramValue = registerField.isReadonly() ? registerField.getValue() : StringUtils.trimToNull(request.getParameter(paramName));
                   
                   if (registerField.isRequired() && StringUtils.isBlank(paramValue)) {
                     String theMessage = TagUtils.navResourceString("externalSubjectSelfRegister.fieldRequiredError");
